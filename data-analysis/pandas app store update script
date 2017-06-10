@@ -1,0 +1,32 @@
+
+# This code lets any company compare changes of App Store Tier Prices and decide whether they need to:
+a) Go to an all together new price tier, or
+b) Update their corresponding Play Store Prices
+
+
+# Step 1: Go to iTunes Connect, Download the App Store Tier Prices' CSV
+
+# Step 2: Load your CSV into a pandas dataframe and tranform it before exporting it to a CSV file again.
+import pandas as pd
+df = pd.ExcelFile('pricing_matrix_20170502.xlsx').parse('sheet1'); 
+df1 = df[df.columns[1::2]]
+df2 = df1.transpose()
+df3 = df2[[2,5,8,21,51]]
+df3 = df3.reset_index()
+df3["index"] = df3["index"].astype(str) + '_20170502'
+#print(df3)
+df3.to_csv("tier-prices_20170502.csv")
+
+# Step 3: Load your 2nd CSV (updated price changes) into a pandas dataframe and tranform it + Change Dates below.
+import pandas as pd
+df = pd.ExcelFile('pricing_matrix_20170609.xlsx').parse('sheet1'); 
+df1 = df[df.columns[1::2]]
+df2 = df1.transpose()
+df3 = df2[[2,5,8,21,51]]
+df3 = df3.reset_index()
+df3["index"] = df3["index"].astype(str) + '_20170609'
+#print(df3)
+df3.to_csv("tier-prices_20170609.csv")
+
+# WIP >> Step 4: Merge & Order
+# WIP >> Step 5: Export to a central output sheet
